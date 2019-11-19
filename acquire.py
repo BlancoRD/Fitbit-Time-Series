@@ -31,7 +31,7 @@ def basic_clean(df):
 	df.date = pd.to_datetime(df.date)
 	df = df.set_index('date')
 	print('Total length of df is: {}'.format(len(df)))
-	print('Total length of none-repeating dates is: {}'.format(len(df.asfreq('D'))))
+	print('Total length of non-repeating dates is: {}'.format(len(df.asfreq('D'))))
 	return df
 
 def split_date(df):
