@@ -38,9 +38,5 @@ def split_date(df):
 
 	train = df['2018-07-16':]
 	test = df['2018-04':'2018-07-15']
-	print(test.head())
-	print(test.tail())
-	print(train.head())
-	print(train.tail())
 	return train, test
 
