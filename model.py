@@ -1,35 +1,14 @@
-# data manipulation 
-import numpy as np
+#target_vars = train.columns.to_list()
+#eval_df = pd.DataFrame(columns=['model_type', 'target_var', 'metric', 'value'])
 import pandas as pd
-
-from datetime import datetime
-import itertools as it
-
-from statsmodels.tsa.api import ExponentialSmoothing, SimpleExpSmoothing, Holt
-import statsmodels.api as sm
-from statsmodels.tsa.ar_model import AR
-
-from sklearn.model_selection import TimeSeriesSplit
 from sklearn import metrics
-
 import math
 
-# data visualization 
-import matplotlib
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-
-# ignore warnings
-import warnings
-warnings.filterwarnings("ignore")
-import acquire
-
-target_vars = train.columns.to_list()
-eval_df = pd.DataFrame(columns=['model_type', 'target_var', 'metric', 'value'])
-eval_df
-
-def evaluate(target_var, train = train, test = test, output=True):
+def evaluate(target_var, train, test, output=True):
+    import pandas as pd
+    from sklearn import metrics
+    import math
+    
     mse = metrics.mean_squared_error(test[target_var], yhat[target_var])
     rmse = math.sqrt(mse)
 
@@ -39,21 +18,28 @@ def evaluate(target_var, train = train, test = test, output=True):
     else:
         return mse, rmse
     
-def append_eval_df(model_type, target_vars, train = train, test = test):
-	eval_df = pd.DataFrame(columns=['model_type', 'target_var', 'metric', 'value'])
+def append_eval_df(model_type, target_vars, train , test, eval_df):
+    import pandas as pd
+    from sklearn import metrics
+    import math
+    
     temp_eval_df = pd.concat([pd.DataFrame([[model_type, i, 'mse', evaluate(target_var = i, 
-                                                                            train = train, 
-                                                                            test = test, 
-                                                                            output=False)[0]],
-                                            [model_type, i, 'rmse', evaluate(target_var = i, 
                                                                              train = train, 
                                                                              test = test, 
+                                                                            output=False)[0]],
+                                            [model_type, i, 'rmse', evaluate(target_var = i, 
+                                                                              train =train, 
+                                                                              test =test, 
                                                                              output=False)[1]]],
                                            columns=['model_type', 'target_var', 'metric', 'value']) 
                               for i in target_vars], ignore_index=True)
-    return eval_df.append(temp_eval_df, ignore_index=True)
+    eval_df = eval_df.append(temp_eval_df, ignore_index=True)
+    return eval_df
 
-def plot_and_eval(target_vars, train = train, test = test,metric_fmt = '{:.2f}', linewidth = 4):
+def plot_and_eval(target_vars, train , test ,metric_fmt = '{:.2f}', linewidth = 4):
+    import pandas as pd
+    from sklearn import metrics
+    import math    
     if type(target_vars) is not list:
         target_vars = [target_vars]
 
@@ -62,28 +48,36 @@ def plot_and_eval(target_vars, train = train, test = test,metric_fmt = '{:.2f}',
     #plt.plot(test[target_vars], label='Test', linewidth=1)
 
     for var in target_vars:
-        mse, rmse = evaluate(target_var = var, train = train, test = test, output=False)
+        mse, rmse = evaluate(target_var = var,  train = train,  test =test, output=False)
         plt.plot(yhat[var], linewidth=linewidth)
         print(f'{var} -- MSE: {metric_fmt} RMSE: {metric_fmt}'.format(mse, rmse))
     
     plt.show()
 
-
-def last_observed():
+def last_observed(train, test, target_vars, eval_df):
+    import pandas as pd
+    from sklearn import metrics
+    import math    
     yhat = pd.DataFrame(test[target_vars])
     for var in target_vars:
         yhat[var] = int(train[var][-1:])
-    eval_df = append_eval_df('last_observed', target_vars, train = train, test = test)
+        eval_df = append_eval_df('last_observed', target_vars, train, test, eval_df)
     return eval_df
 
-def simple_avg():
+def simple_avg(train, test, target_vars):
+    import pandas as pd
+    from sklearn import metrics
+    import math
     yhat = pd.DataFrame(test[target_vars])
     for var in target_vars:
         yhat[var] = train[var].mean()
-    eval_df = append_eval_df('simple_avg', target_vars, train = train, test = test)
+    eval_df = append_eval_df('simple_avg', target_vars, train, test)
     return eval_df
 
-def moving_avg():
+def moving_avg(train, test, target_vars):
+    import pandas as pd
+    from sklearn import metrics
+    import math
     periods = 30
     periods = 30
     for var in target_vars:
@@ -102,11 +96,14 @@ def moving_avg():
             plt.plot(yhat[var])
             print('\nrolling averge period:',p)
             print(var)
-            evaluate(var, train = train, test = test)
-    eval_df2 = append_eval_df('moving_avg', target_vars, train = train, test = test)
+            evaluate(var, train,  test)
+    eval_df2 = append_eval_df('moving_avg', target_vars,  train,  test)
     return eval_df1, eval_df2
 
-def holt_linear():
+def holt_linear(train, test, target_vars):
+    import pandas as pd
+    from sklearn import metrics
+    import math
     from statsmodels.tsa.api import Holt
 
     for var in target_vars:
@@ -114,15 +111,18 @@ def holt_linear():
         yhat[var] = pd.DataFrame(model.forecast(test[var].shape[0]), columns=[var])
 
     #plot_and_eval(target_vars, train, test)
-        eval_df = append_eval_df(model_type='holts_linear_trend', target_vars=target_vars, train = train, test = test)
+        eval_df = append_eval_df(model_type='holts_linear_trend', target_vars=target_vars,  train =train,  test =test)
     return eval_df
 
-def holt_exp():
+def holt_exp(train, test, target_vars):
+    import pandas as pd
+    from sklearn import metrics
+    import math
     for var in target_vars:
         from statsmodels.tsa.holtwinters import ExponentialSmoothing
         model = ExponentialSmoothing(train[var], trend= 'additive').fit(smoothing_level=.3, smoothing_slope=.1, optimized=False)
         yhat[var] = pd.DataFrame(model.forecast(test[var].shape[0]), columns=[var])
 
     #plot_and_eval(target_vars, train, test)
-        eval_df = append_eval_df(model_type='holts_exponential_trend', target_vars=target_vars, train = train, test = test)
+        eval_df = append_eval_df(model_type='holts_exponential_trend', target_vars=target_vars,  train = train, test = test)
     return eval_df
