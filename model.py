@@ -18,7 +18,7 @@ import math
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
-%matplotlib inline
+
 
 # ignore warnings
 import warnings
