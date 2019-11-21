@@ -33,9 +33,9 @@ Fitbit data (.csv)
 
 Multiple .py files to run model and reproduce the report
 
-acquire.py,
-summarize.py,
-prep.py,
+acquire.py, 
+summarize.py, 
+prep.py, 
 model.py
 
 
