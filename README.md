@@ -12,8 +12,8 @@
 
 **Deliverables**
 
-- Report (in jupyter notebook)
-- Prediction (.csv)
+-  **Time-Series-Report** Analysis Report (jupyter notebook)
+- Prediction (**predictions_for_missing_weeeks.csv**)
 - Data dictionary (.xlsx)
 - Presentation material (Link: )
 
