@@ -14,7 +14,7 @@
 
 -  **Time-Series-Report** Analysis Report (jupyter notebook)
 - Prediction (**predictions_for_missing_weeeks.csv**)
-- Data dictionary (.xlsx)
+- Data dictionary (data_dictionary.xlsx)
 - Presentation material (Link: )
 
 
