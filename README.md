@@ -12,13 +12,13 @@
 
 **Deliverables**
 
-Report (in jupyter notebook)
-Prediction (.csv)
-Data dictionary (.xlsx)
-Presentation material (Link: )
+- Report (in jupyter notebook)
+- Prediction (.csv)
+- Data dictionary (.xlsx)
+- Presentation material (Link: )
 
 
-Data Science Skills Used
+**Data Science Skills Used**
  - Data prep and cleaning
  - Time Series Analysis
  - Visualization
@@ -29,16 +29,15 @@ Data Science Skills Used
 
 **Dependencies**
 
-Fitbit data (.csv)
+- Fitbit data (.csv)
 
-Multiple .py files to run model and reproduce the report
+- Multiple .py files to run model and reproduce the report
 
-acquire.py, 
+> acquire.py, 
 summarize.py, 
 prep.py, 
 model.py
 
+- Run through .ipynb
 
-Run through .ipynb
-
-Random states are set as 123 in the notebook
+- Random states are set as 123 in the notebook
