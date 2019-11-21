@@ -10,7 +10,7 @@
  - There are patterns on Armstrong's daily activities.
  - Armstrong's fitness activity is affected by the month/season of the year.
 
-**Deliverables:**
+**Deliverables**
 
 Report (in jupyter notebook)
 Prediction (.csv)
@@ -32,9 +32,10 @@ Data Science Skills Used
 Fitbit data (.csv)
 
 Multiple .py files to run model and reproduce the report
-acquire.py
-summarize.py
-prep.py
+
+acquire.py,
+summarize.py,
+prep.py,
 model.py
 
 
